@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import autoComplete from 'primereact/autocomplete';
 
 // set up axios config defaults where possible - now wherever I call axios these defaults will be used
 axios.defaults.baseURL = "https://cors-anywhere.herokuapp.com/https://web.consonance.app/api/v4/products.json?"; // test the entire URL with params from Talend
@@ -8,7 +9,8 @@ axios.defaults.headers.common["Authorization"] =
 
 export default class BookList extends React.Component {
     state = {
-        books: []
+        books: [],
+        pages: []
     }
 
     componentDidMount() {
@@ -17,19 +19,22 @@ export default class BookList extends React.Component {
             console.log(res);
             this.setState({ books: res.data.products});
         })
+        .catch(err => {
+            console.log('Error getting data from API', err)
+        })
     }
 
 
 render() {
     return (
+        <div className="books">
+
         <ul>
             {this.state.books.map(book => (
-            <li key={book.id}>{book.full_title} {book.isbn}</li>
-            
-            
-            
+            <li key={book.id}><p>{book.id} | {book.full_title} | {book.isbn}</p></li>
             ))};
         </ul>
+        </div>
     )
       
     }
